@@ -9,17 +9,42 @@ zomato.defaults.headers.common['user-key'] = process.env.ZOMATO_KEY;
 
 class Zomato {
     static getNearby(req, res) {
-        console.log(req.query)
+
+
+
         let lat = req.query.lat
         let lon = req.query.lon
         let radius = req.query.radius
-        zomato.get(`/search?lat=${lat}&lon=${lon}&radius=${radius}&cuisines=1040`)
-        .then(function({data}){
-            res.status(200).json(data)
-        })
-        .catch(function({err}){
-            res.status(500).json({msg : err})
-        })
+        let sortBy = req.query.sortBy
+        let order = req.query.order
+
+        zomato.get(`/search?lat=${lat}&lon=${lon}&radius=${radius}&cuisines=1040&sort=${sortBy}&order=${order}`)
+            .then(function ({
+                data
+            }) {
+                data = data.restaurants
+
+                // if (sortBy == 'price') {
+                //     if (sort == 'desc') {
+                //         data = data.sort(function (a, b) {
+                //             return b.restaurant.average_cost_for_two - a.restaurant.average_cost_for_two
+                //         })
+                //     } else {
+                //         data = data.sort(function (a, b) {
+                //             return a.restaurant.average_cost_for_two - b.restaurant.average_cost_for_two
+                //         })
+                //     }
+                // }
+
+                res.status(200).json(data)
+            })
+            .catch(function ({
+                err
+            }) {
+                res.status(500).json({
+                    msg: err
+                })
+            })
     }
 }
 

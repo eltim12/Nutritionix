@@ -8,7 +8,7 @@ const port = 3000
 const mongoose = require("mongoose")
 mongoose.set("useFindAndModify", false)
 
-mongoose.connect('mongodb://localhost:27017/fancyTodo', { useNewUrlParser: true })
+//mongoose.connect('mongodb://localhost:27017/fancyTodo', { useNewUrlParser: true })
 
 app.use(express.urlencoded({ extended: false }))
 
