@@ -7,6 +7,7 @@ const port = 3000
 
 const mongoose = require("mongoose")
 mongoose.set("useFindAndModify", false)
+mongoose.set('useCreateIndex', true)
 
 mongoose.connect('mongodb://localhost:27017/fancyTodo', { useNewUrlParser: true })
 
