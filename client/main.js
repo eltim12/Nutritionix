@@ -2,7 +2,7 @@
     function cariKopi() {
        
         $.ajax({
-                url: `http://localhost:3000/coffee/search?lat=${lat}&lon=${lng}&cuisines=1040&sortBy=rating&order=asc`,
+                url: `http://localhost:3000/coffee/search?lat=${lat}&lon=${lng}&cuisines=1040&sortBy=real_distance&order=asc`,
                 method: 'GET'
             })
             .done(data => {
