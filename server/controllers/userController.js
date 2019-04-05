@@ -12,7 +12,6 @@ class UserController {
         User
             .create({ name, email, password })
             .then(newUser => {
-                console.log('success', newUser)
                 res.status(201).json(newUser)
             })
             .catch(err => {
@@ -21,6 +20,7 @@ class UserController {
     }
 
     static login(req, res) {
+        console.log(req.body)
         User
             .findOne({ email: req.body.email })
             .then(user => {
@@ -29,7 +29,7 @@ class UserController {
                 } else {
                     if (bcrypt.compareSync(req.body.password, user.password)) {
                         const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET)
-
+                        console.log(token)
                         res.status(200).json(token)
                     } else {
                         res.status(401).json({ message: 'Wrong password' })
