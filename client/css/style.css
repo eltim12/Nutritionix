@@ -1,0 +1,255 @@
+/*
+COLORS:
+
+Light green: #7ed56f
+Medium green: #55c57a
+Dark green: #28b485
+*/
+
+/* Biasanya tiap browser punya default margin padding yang berbeda2, maka perlu dibuat universal setting */
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+/* default font size browser 16 => 10 = 16 * 62.5% */
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: #777;
+
+    box-sizing: border-box;
+}
+
+/* 
+- class selector menggunakan titik 
+- vh = view point height => relatif
+- shortcut = type backing untuk menampilkan sugesti background-image, backsi > background-size
+- cover = ukuran gambar akan menyesuaikan dengan window browser
+- background pos = jadi patokan titik yang tidak dipotong saat zoom in
+*/
+.header {
+    height: 100vh;
+    background-image: linear-gradient(to right bottom, hsla(45, 100%, 94%, 0.8), hsla(49, 60%, 62%, 0.801)), url('../img/rocks-and-sea.jpg');
+    background-size: cover;
+    background-position: top;
+    position: relative;
+
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%)
+}
+
+.header__logo-box {
+    position: absolute;
+    top: 4rem;
+    left: 4rem;
+}
+
+.header__logo {
+    height: 3.5rem;
+}
+
+.header__text-box {
+    position: absolute;
+    /* terhadap parent elemnt */
+    top: 40%;
+    left: 50%;
+    text-align: center;
+    /* terhadap element ini sendiri */
+    transform: translate(-50%, -50%);
+}
+
+.heading-primary {
+    color: white;
+    text-transform: uppercase;
+
+    /* untuk mengatasi glitch kecil pada animasi */
+    backface-visibility: hidden;
+    margin-bottom: 6rem;
+}
+
+.heading-primary--main {
+    display: block;
+    font-size: 6rem;
+    font-weight: 500;
+    letter-spacing: 3.5rem;
+
+    animation-name: moveInLeft;
+    animation-duration: 3s;
+    animation-timing-function: ease-out;
+    /* animation-iteration-count: 3; */
+}
+
+.heading-primary--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 1.7rem;
+    
+    animation-name: moveInRight;
+    animation-duration: 3s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes moveInLeft {
+    0% {
+        opacity: 0;
+        /* awal animasi ada di lebih kiri dari posisi awal */
+        transform: translateX(-10rem)
+    }
+
+    80% {
+        transform: translateX(1rem)
+    }
+
+    100% {
+        opacity: 1;
+        /* kembali ke posisi awal */
+        transform: translate(0)
+    }
+}
+
+@keyframes moveInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20rem)
+    }
+
+    80% {
+        transform: translateX(-1rem)
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0)
+    }
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(3rem)
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0)
+    }
+}
+
+/* 
+- class:psuedo-class(special condition/state)
+*/
+.tombol:link,
+.tombol:visited {
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1.5rem 4rem;
+    /* untuk mengatur tipe display tombol */
+    display: inline-block;
+    /* dirubah ujungnya jadi melengkung */
+    border-radius: 10rem;
+    transition: all .2s;
+    position: relative;
+}
+
+.tombol:hover {
+    transform: translateY(-.3rem);
+    /* x dir, y dir, blur, warna+opacity */
+    box-shadow: 0 1rem 2rem rgba(0,0,0,.2);
+}
+
+.tombol:active {
+    transform: translateY(.1rem);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+}
+
+.tombol--white {
+    background-color: white;
+    color: grey;
+}
+
+.tombol::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 10rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .4s;
+}
+
+.tombol--white::after {
+    background-color: white;
+}
+
+.tombol:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.tombol--animated {
+    animation: moveInBottom .5s ease-out .75s;
+    animation-fill-mode: backwards; 
+}
+
+#loginForm {
+    margin-top: 20rem;
+  }
+  
+  #login-button {
+    font-weight: lighter;
+    width: 8rem;
+  }
+  
+  #login-button:hover {
+    width: 10rem;
+  }
+  
+  #register-button {
+    font-weight: lighter;
+    width: 10rem;
+  }
+  
+  #register-button:hover {
+    width: 12rem;
+  }
+  
+  .input:focus {
+    border-bottom: 1px solid #000000;
+    box-shadow: 0 1px 0 0 #000000;
+  }
+  
+  .input:focus + label {
+    color: #000000;
+  }
+  
+  span {
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+  }
+  
+  span:hover {
+    color: grey;
+  }
+
+#g-button {
+   margin-left: 8.5rem;
+}
+
+#registerForm {
+    margin-top: 15rem;
+}

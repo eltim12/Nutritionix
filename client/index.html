@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google-signin-client_id"
+        content="563252494522-hccd5ve2teth35uns0s1hckah9dqr0nb.apps.googleusercontent.com">
+
+    <title>Document</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAojjGTWZG4GfhQQOJ1CW4U12SZnNVT_LA&callback=initMap"
+        async defer></script>
+
+</head>
+
+<body>
+
+    <div id="coffee-table">
+        <div id='map' style="width: 100%; height: 400px;"></div>
+        <!-- <button onclick="cariKopi()"></button> -->
+        <a class="waves-effect waves-light btn-large black" onclick="cariKopi()">show me my coffee!</a>
+
+        <a class="waves-effect waves-light btn-large black" onclick="cariArtikel()">wanna know more about coffee?</a>
+        <div id="list-berita"></div>
+
+        <br>
+
+    </div>
+
+
+    <div id="starting">
+        <header class="header">
+            <div class="header__text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary--main">Coffee</span>
+                    <span class="heading-primary--sub">is what makes you awake.</span>
+                </h1>
+                <a href="#" onclick="getLoginForm()" class="tombol tombol--white tombol--animated">Start discovering
+                    coffe
+                    near
+                    by</a>
+            </div>
+        </header>
+    </div>
+
+
+    <div class="row">
+        <div class="col s6 offset-s3">
+            <div id="loginForm" class="container center">
+                <div class="row">
+                    <form class="col s6 offset-s3" @submit.prevent="submitLogin">
+                        <h4 class>Login</h4>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email-in" type="email" class="input validate" autocomplete="off">
+                                <label for="email_inline">Email</label>
+                                <span class="helper-text" data-error="wrong email format" data-success="right"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="password-in" type="password" class="input validate" autocomplete="off">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button id="login-button" onclick="login()"
+                                class="waves-effect waves-light white grey-text text-darken-2 btn" type="submit">
+                                <span>Login</span>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button id="register-button"
+                                class="waves-effect waves-light white grey-text text-darken-2 btn"
+                                onclick="showRegisterForm()">
+                                <span>Register</span>
+                            </button>
+                        </div>
+                        <div id="g-button" class="g-signin2" onclick="onSignIn"></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6 offset-s3">
+            <div id="registerForm" class="container center">
+                <div class="row">
+                    <form class="col s6 offset-s3">
+                        <h4 class>Register</h4>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="name-r" type="text" class="input validate" autocomplete="off">
+                                <label>Name</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email-r" type="email" class="input validate" autocomplete="off">
+                                <label for="email_inline">Email</label>
+                                <span class="helper-text" data-error="wrong email format" data-success="right"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="password-r" type="password" class="input validate" v-model="passwordInput"
+                                    autocomplete="off">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button id="submit-button" onclick="register()"
+                                class="waves-effect waves-light white grey-text text-darken-2 btn" type="submit"
+                                <span>Register</span>
+                            </button>
+                        </div>
+
+                        <div id="g-button" class="g-signin2" onclick="onSignIn"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+</body>
+<script src="main.js"></script>
+
+<script>
+
+    function getLoginForm() {
+        // $('#coffee-table').hide()
+        $('#starting').hide()
+        $('#registerForm').hide()
+        $('#loginForm').show()
+    }
+
+    $(document).ready(function () {
+        if (!localStorage.getItem('token')) {
+            isLogin(false)
+        } else {
+            isLogin(true)
+        }
+    })
+
+    function isLogin(bool) {
+        if (bool === false) {
+            $('#starting').show()
+
+        } else {
+
+        }
+    }
+
+
+
+    function onSignIn(googleUser) {
+        event.preventDefault()
+        const id_token = googleUser.getAuthResponse().id_token;
+
+        $
+            .post('http://localhost:3000/users/google-login', { token: id_token })
+            .done((response) => {
+                localStorage.setItem('token', response)
+                
+            })
+            .fail((jqXHR, textstatus) => {
+                console.log('fail', textstatus)
+                $('#loginForm').hide()
+                $('#coffee-table').show()
+            })
+
+    }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+            localStorage.clear()
+        });
+    }
+
+    function showRegisterForm() {
+        event.preventDefault()
+
+        $('#loginForm').hide()
+        $('#registerForm').show()
+    }
+
+
+    function register() {
+        event.preventDefault()
+        const name = $('#name-r').val()
+        const email = $('#email-r').val()
+        const password = $('#password-r').val()
+        console.log({ name, email, password })
+        $
+            .ajax({
+                url: 'http://localhost:3000/users/register',
+                method: 'post',
+                data: { name, email, password }
+            })
+            .done((response) => {
+                $('#registerForm').hide()
+                $('#loginForm').show()
+
+                // balik lagi ke login form
+            })
+            .fail((jqXHR, textstatus) => {
+                console.log('fail', textstatus)
+            })
+    }
+
+    function login() {
+        event.preventDefault()
+        const email = $('#email-in').val()
+        const password = $('#password-in').val()
+
+        $
+            .ajax({
+                url: 'http://localhost:3000/users/login',
+                method: 'post',
+                data: { email, password }
+            })
+            .done((response) => {
+                localStorage.setItem('token', response)
+                $('#loginForm').hide()
+                $('#coffee-table').show()
+
+            })
+            .fail((jqXHR, textstatus) => {
+                console.log('fail', textstatus)
+            })
+    }
+
+    function cariArtikel() {
+        $('#kopi').hide()
+        event.preventDefault()
+        $.ajax({
+            url: 'http://localhost:3000/articles',
+            method: 'get'
+        })
+            .done(data => {
+                data.map(e => {
+                    $('#list-berita').append(`
+                <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <p>${e.head}</p>
+        </div>
+        <div class="card-action">
+          <a href="${e.link}">check it out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+                `)
+                })
+            })
+            .fail(err => {
+                console.log(err)
+            })
+    }
+
+</script>
+
+</html>
