@@ -26,11 +26,11 @@ userSchema.post('save', function (error, doc, next) {
     }
 })
 
-userSchema.pre('save', function (error, doc, next) {
+userSchema.pre('save', function (next) {
     this.password = bcrypt.hashSync(this.password, Number(process.env.SALT))
     next()
 })
 
-let User = mongoose.model('User', userSchema)
+let User = mongoose.model('user', userSchema)
 
 module.exports = User

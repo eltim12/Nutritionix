@@ -1,4 +1,4 @@
-const { User } = require('../models/user')
+const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { OAuth2Client } = require('google-auth-library')
@@ -8,10 +8,11 @@ const client = new OAuth2Client(CLIENT_ID)
 class UserController {
     static register(req, res) {
         const { name, email, password } = req.body
-
+        
         User
             .create({ name, email, password })
             .then(newUser => {
+                console.log('success', newUser)
                 res.status(201).json(newUser)
             })
             .catch(err => {
@@ -21,7 +22,7 @@ class UserController {
 
     static login(req, res) {
         User
-            .findOne({ where: { email: req.body.email } })
+            .findOne({ email: req.body.email })
             .then(user => {
                 if (!user) {
                     res.status(404).json({ message: 'User not found' })
@@ -50,8 +51,8 @@ class UserController {
                 audience: CLIENT_ID,
             })
             .then(ticket => {
-                payload = ticket.getPayload();
-                const userid = payload['sub'];
+                payload = ticket.getPayload()
+                const userid = payload['sub']
 
                 return User.findOne({ email: payload.email})
             })
@@ -71,4 +72,17 @@ class UserController {
                 res.status(500).json({ message: err.message })
             })
     }
+
+    static getAllUser(req, res) {
+        User
+            .find({})
+            .then(users => {
+                res.status(200).json(users)
+            })
+            .catch(err => {
+                res.status(500).json({ message: err.message })
+            })
+    }
 }
+
+module.exports = UserController
