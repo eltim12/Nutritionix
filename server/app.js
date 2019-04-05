@@ -17,13 +17,13 @@ app.use(express.json())
 app.use(cors())
 
 const zomatoRoutes = require('./routes/zomato')
+const googleMapsRoutes = require('./routes/googleMaps')
 
-// const googleMapsRoutes = require('./routes/googleMaps')
 // const nutritionRoutes = require('./routes/nutrition')
 // const userRoutes = require('./routes/user')
 
-app.use('/', zomatoRoutes)
-// app.use('/googleMaps', googleMapsRoutes)
+app.use('/coffee', zomatoRoutes)
+app.use('/distance', googleMapsRoutes)
 // app.use('/nitritionRoutes', nutritionRoutes)
 // app.use('/users', userRoutes)
 

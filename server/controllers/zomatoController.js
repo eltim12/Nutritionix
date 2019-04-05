@@ -10,8 +10,6 @@ zomato.defaults.headers.common['user-key'] = process.env.ZOMATO_KEY;
 class Zomato {
     static getNearby(req, res) {
 
-
-
         let lat = req.query.lat
         let lon = req.query.lon
         let radius = req.query.radius
@@ -42,7 +40,7 @@ class Zomato {
                 err
             }) {
                 res.status(500).json({
-                    msg: err
+                    msg: err.message
                 })
             })
     }
