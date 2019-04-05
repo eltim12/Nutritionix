@@ -17,33 +17,26 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAojjGTWZG4GfhQQOJ1CW4U12SZnNVT_LA&callback=initMap"
+        async defer></script>
 
 </head>
 
 <body>
+
+    <div id="coffee-table">
         <div id='map' style="width: 100%; height: 400px;"></div>
-        <button onclick="cariKopi()"></button>
+        <!-- <button onclick="cariKopi()"></button> -->
+        <a class="waves-effect waves-light btn-large black" onclick="cariKopi()">show me my coffee!</a>
+
+        <a class="waves-effect waves-light btn-large black" onclick="cariArtikel()">wanna know more about coffee?</a>
+        <div id="list-berita"></div>
+
         <br>
-        <table class="highlight responsive-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>tempat Ngopi</th>
-                    <th>Adress</th>
-                    <th>rating</th>
-                    <th>distance</th>
-                    <th>time estimate</th>
-                </tr>
-            </thead>
-            <tbody id='listPlace'>
-                <!-- <tr>
-                    <td>no.</td>
-                    <td>tempat Ngopi</td>
-                    <td>distance</td>
-                    <td>time</td>
-                </tr> -->
-            </tbody>
-        </table>
+
+    </div>
+
+
     <div id="starting">
         <header class="header">
             <div class="header__text-box">
@@ -80,19 +73,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button id="login-button" onclick="login()" class="waves-effect waves-light white grey-text text-darken-2 btn"
-                                type="submit">
+                            <button id="login-button" onclick="login()"
+                                class="waves-effect waves-light white grey-text text-darken-2 btn" type="submit">
                                 <span>Login</span>
                             </button>
                         </div>
                         <div class="row">
-                            <button id="register-button" 
+                            <button id="register-button"
                                 class="waves-effect waves-light white grey-text text-darken-2 btn"
                                 onclick="showRegisterForm()">
                                 <span>Register</span>
                             </button>
                         </div>
-                        <div id="g-button" class="g-signin2" data-onsuccess="onSignIn"></div>
+                        <div id="g-button" class="g-signin2" onclick="onSignIn"></div>
 
                     </form>
                 </div>
@@ -126,12 +119,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button id="submit-button" onclick="register()"  class="waves-effect waves-light white grey-text text-darken-2 btn" type="submit"
+                            <button id="submit-button" onclick="register()"
+                                class="waves-effect waves-light white grey-text text-darken-2 btn" type="submit"
                                 <span>Register</span>
                             </button>
                         </div>
-                        
-                        <div id="g-button" class="g-signin2" data-onsuccess="onSignIn"></div>
+
+                        <div id="g-button" class="g-signin2" onclick="onSignIn"></div>
                     </form>
                 </div>
             </div>
@@ -141,8 +135,17 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 </body>
+<script src="main.js"></script>
 
 <script>
+
+    function getLoginForm() {
+        // $('#coffee-table').hide()
+        $('#starting').hide()
+        $('#registerForm').hide()
+        $('#loginForm').show()
+    }
+
     $(document).ready(function () {
         if (!localStorage.getItem('token')) {
             isLogin(false)
@@ -152,32 +155,32 @@
     })
 
     function isLogin(bool) {
-        console.log(bool)
         if (bool === false) {
-
             $('#starting').show()
 
         } else {
+
         }
     }
 
-    function getLoginForm() {
-        $('#starting').hide()
-        $('#registerForm').hide()
-        $('#loginForm').show()
-    }
+
 
     function onSignIn(googleUser) {
+        event.preventDefault()
         const id_token = googleUser.getAuthResponse().id_token;
 
         $
             .post('http://localhost:3000/users/google-login', { token: id_token })
             .done((response) => {
                 localStorage.setItem('token', response)
+                
             })
             .fail((jqXHR, textstatus) => {
                 console.log('fail', textstatus)
+                $('#loginForm').hide()
+                $('#coffee-table').show()
             })
+
     }
 
     function signOut() {
@@ -209,6 +212,9 @@
                 data: { name, email, password }
             })
             .done((response) => {
+                $('#registerForm').hide()
+                $('#loginForm').show()
+
                 // balik lagi ke login form
             })
             .fail((jqXHR, textstatus) => {
@@ -228,11 +234,43 @@
                 data: { email, password }
             })
             .done((response) => {
-                console.log(response, 'responseeee')
                 localStorage.setItem('token', response)
+                $('#loginForm').hide()
+                $('#coffee-table').show()
+
             })
             .fail((jqXHR, textstatus) => {
                 console.log('fail', textstatus)
+            })
+    }
+
+    function cariArtikel() {
+        $('#kopi').hide()
+        event.preventDefault()
+        $.ajax({
+            url: 'http://localhost:3000/articles',
+            method: 'get'
+        })
+            .done(data => {
+                data.map(e => {
+                    $('#list-berita').append(`
+                <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <p>${e.head}</p>
+        </div>
+        <div class="card-action">
+          <a href="${e.link}">check it out</a>
+        </div>
+      </div>
+    </div>
+  </div>
+                `)
+                })
+            })
+            .fail(err => {
+                console.log(err)
             })
     }
 

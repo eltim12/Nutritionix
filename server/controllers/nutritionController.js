@@ -3,6 +3,8 @@ const axios = require('axios')
 module.exports = {
 
     getArticle(req, res) {
+
+        console.log('masokkkkkkkk')
         let allArticle = []
         axios.get('https://api.nytimes.com/svc/search/v2/articlesearch.json?q=coffee&api-key=6MbRR86hmXGLbdd6xbpxKzZsUfxHlkqX')
             .then(({ data }) => {

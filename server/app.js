@@ -22,9 +22,9 @@ const googleMapsRoutes = require('./routes/googleMaps')
 const nutritionRoutes = require('./routes/nutrition')
 const userRoutes = require('./routes/user')
 
-app.use('/zomatos', zomatoRoutes)
-app.use('/googleMaps', googleMapsRoutes)
-app.use('/nitritionRoutes', nutritionRoutes)
+app.use('/coffee', zomatoRoutes)
+app.use('/distance', googleMapsRoutes)
+app.use('/articles', nutritionRoutes)
 app.use('/users', userRoutes)
 
 app.listen(port, () => console.log("listening on port" + port))

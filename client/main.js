@@ -1,5 +1,22 @@
 
     function cariKopi() {
+        $('#list-berita').empty()
+        $('#coffee-table').append(`
+        
+        <table id="kopi" class="highlight responsive-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>tempat Ngopi</th>
+                    <th>Adress</th>
+                    <th>rating</th>
+                    <th>distance</th>
+                    <th>time estimate</th>
+                </tr>
+            </thead>
+            <tbody id='listPlace'>
+            </tbody>
+        </table>`)
        
         $.ajax({
                 url: `http://localhost:3000/coffee/search?lat=${lat}&lon=${lng}&cuisines=1040&sortBy=real_distance&order=asc`,
@@ -103,6 +120,10 @@
 
 
     $('document').ready(function () {
+        $('#coffee-table').hide()
+        $('#loginForm').hide()
+        $('#registerForm').hide()
+        $('#starting').show()
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
