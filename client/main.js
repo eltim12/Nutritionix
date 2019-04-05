@@ -1,9 +1,8 @@
 
     function cariKopi() {
-        console.log(lat,lng)
        
         $.ajax({
-                url: `http://localhost:3000/coffee/search?lat=${lat}&lon=${lng}&cuisines=1040&sortBy=rating&order=asc`,
+                url: `http://localhost:3000/coffee/search?lat=${lat}&lon=${lng}&cuisines=1040&sortBy=real_distance&order=asc`,
                 method: 'GET'
             })
             .done(data => {
@@ -18,7 +17,8 @@
                         name: el.restaurant.name,
                         address: el.restaurant.location.address,
                         rating: el.restaurant.user_rating.aggregate_rating,
-                        cuisines: el.restaurant.cuisines
+                        cuisines: el.restaurant.cuisines,
+                        thumb : el.restaurant.thumb
                     }
                     restaurants.push(obj)
                 })
@@ -57,6 +57,14 @@
                     marker.addListener('click', function () {
                         infowindow.open(map, marker);
                     });
+
+                    $('#listPlace').append(`<tr id="subList${i}">
+                        <td><img src="${restaurants[i].thumb}"></img></td>
+                        <td>${restaurants[i].name}</td>
+                        <td>${restaurants[i].address}</td>
+                        <td>${restaurants[i].rating}</td>
+                    </tr>
+                    `)
                 }
 
                 let arrCoor = []
@@ -82,6 +90,10 @@
                             distanceAll.push(obj)
                         })
                         
+                        distanceAll.map(function(el,i){
+                            $(`#subList${i}`).append(`<td>${el.distance}</td>`)
+                            $(`#subList${i}`).append(`<td>${el.time}</td>`)
+                        })
                     })
             })
             .fail(err => {
@@ -110,7 +122,7 @@
                     lat: lat,
                     lng: lng
                 },
-                zoom: 15
+                zoom: 17
             });
 
             var contentString = '<div id="content">' +
