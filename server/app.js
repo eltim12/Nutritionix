@@ -7,8 +7,9 @@ const port = 3000
 
 const mongoose = require("mongoose")
 mongoose.set("useFindAndModify", false)
+mongoose.set('useCreateIndex', true)
 
-mongoose.connect('mongodb://localhost:27017/fancyTodo', { useNewUrlParser: true })
+//mongoose.connect('mongodb://localhost:27017/fancyTodo', { useNewUrlParser: true })
 
 app.use(express.urlencoded({ extended: false }))
 
@@ -27,5 +28,9 @@ app.use('/nitritionRoutes', nutritionRoutes)
 // app.use('/users', userRoutes)
 
 
-module.exports = app
+app.use('/coffee', zomatoRoutes)
+app.use('/distance', googleMapsRoutes)
+// app.use('/nitritionRoutes', nutritionRoutes)
+// app.use('/users', userRoutes)
+
 app.listen(port, () => console.log("listening on port" + port))
